@@ -1,0 +1,18 @@
+# Ignore all .terraform directories anywhere in the repo
+**/.terraform/
+
+# Ignore all tfstate files
+**/*.tfstate
+**/*.tfstate.*
+
+# Ignore variable files
+**/terraform.tfvars
+**/terraform.tfvars.json
+
+# Ignore crash logs and plan files
+**/crash.log
+**/*.tfplan
+
+# Ignore override files
+**/*.override.tf
+**/*.override.tf.json
