@@ -2,7 +2,7 @@ FROM apache/spark:3.5.1-scala2.12-java17-python3-ubuntu
 
 USER root
 
-# Define working directory explicitly if not already defined in base image
+# working directory
 WORKDIR /opt/spark/work-dir
 
 # Install system dependencies
@@ -11,7 +11,7 @@ RUN apt-get -qq update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# Set environment variables
+# environment variables
 ENV DELTA_VERSION=3.2.1
 ENV PATH="/opt/spark/sbin:/opt/spark/bin:${PATH}"
 ENV SPARK_HOME="/opt/spark"
@@ -28,5 +28,5 @@ RUN pip install --upgrade pip && \
 RUN wget -P /opt/spark/jars/ https://repo1.maven.org/maven2/io/delta/delta-storage/${DELTA_VERSION}/delta-storage-${DELTA_VERSION}.jar && \
     wget -P /opt/spark/jars/ https://repo1.maven.org/maven2/io/delta/delta-spark_2.12/${DELTA_VERSION}/delta-spark_2.12-${DELTA_VERSION}.jar
 
-# Set default command (optional)
+# Set default command
 CMD ["bash"]
