@@ -15,9 +15,25 @@ terraform/
 │       └── backend.tf     # State backend configuration
 ├── modules/               # Reusable infrastructure modules
 │   ├── vpc/               # VPC networking module
+│   │   ├── main.tf
+│   │   ├── variables.tf
+│   │   └── outputs.tf
 │   ├── eks/               # EKS cluster module
+│   │   ├── main.tf
+│   │   ├── variables.tf
+│   │   └── outputs.tf
 │   ├── s3/                # S3 storage buckets module
-│   └── rds/               # RDS database module
+│   │   ├── main.tf
+│   │   ├── variables.tf
+│   │   └── outputs.tf
+│   ├── rds/               # RDS database module
+│   │   ├── main.tf
+│   │   ├── variables.tf
+│   │   └── outputs.tf
+│   └── security/          # Security configurations module
+│       ├── main.tf
+│       ├── variables.tf
+│       └── outputs.tf
 └── README.md              # Documentation
 ```
 
@@ -27,6 +43,7 @@ terraform/
 - **EKS**: Provisions an EKS cluster with a managed node group
 - **S3**: Creates buckets for raw and transformed data storage
 - **RDS**: Sets up a MySQL database for Hive Metastore
+- **Security**: Manages security group rules between components (e.g., EKS to RDS connectivity)
 
 ## Usage
 
