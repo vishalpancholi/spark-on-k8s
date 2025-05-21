@@ -16,3 +16,8 @@
 # Ignore override files
 **/*.override.tf
 **/*.override.tf.json
+
+# Ignore macOS system files
+.DS_Store
+**/.DS_Store
+

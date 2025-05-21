@@ -11,7 +11,8 @@ terraform/
 │       ├── main.tf        # Main configuration
 │       ├── variables.tf   # Input variables
 │       ├── terraform.tfvars # Variable values
-│       └── outputs.tf     # Output values
+│       ├── outputs.tf     # Output values
+│       └── backend.tf     # State backend configuration
 ├── modules/               # Reusable infrastructure modules
 │   ├── vpc/               # VPC networking module
 │   ├── eks/               # EKS cluster module
