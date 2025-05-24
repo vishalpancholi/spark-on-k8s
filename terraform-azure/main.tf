@@ -55,6 +55,9 @@ module "aks" {
   aks_node_count      = var.aks_node_count
   aks_node_vm_size    = var.aks_node_vm_size
   aks_subnet_id       = azurerm_subnet.aks_subnet.id
+  aks_default_nodepool_enable_auto_scaling = var.aks_default_nodepool_enable_auto_scaling
+  aks_default_nodepool_min_count = var.aks_default_nodepool_min_count
+  aks_default_nodepool_max_count = var.aks_default_nodepool_max_count
 }
 
 // Call the MySQL module
@@ -67,16 +70,15 @@ module "mysql" {
   mysql_admin_password = var.mysql_admin_password
   mysql_database_name  = var.mysql_database_name
   mysql_subnet_id      = azurerm_subnet.mysql_subnet.id
-  #   mysql_private_dns_zone_id = azurerm_private_dns_zone.mysql_dns.id
-
-  #   depends_on = [azurerm_private_dns_zone_virtual_network_link.mysql_dns_link]
+  zone                 = var.zone
 }
 
-// Call the Storage module
+
+// Call the Storage module with container_definitions variable
 module "storage" {
-  source                 = "./modules/storage" // Path to the Storage module
-  resource_group_name    = azurerm_resource_group.main.name
-  location               = azurerm_resource_group.main.location
-  storage_account_name   = var.storage_account_name
-  storage_container_name = var.storage_container_name
+  source              = "./modules/storage"
+  resource_group_name = azurerm_resource_group.main.name
+  location            = azurerm_resource_group.main.location
+  storage_account_name = var.storage_account_name
+  container_definitions = var.container_definitions
 }

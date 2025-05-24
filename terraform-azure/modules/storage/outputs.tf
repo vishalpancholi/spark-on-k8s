@@ -10,7 +10,14 @@ output "storage_account_name" {
   value       = azurerm_storage_account.main.name
 }
 
+# Output the storage account ID for role assignments in the root module
 output "storage_account_id" {
-  description = "The ID of the Storage Account"
-  value       = azurerm_storage_account.main.id
+  value = azurerm_storage_account.main.id
+  description = "The ID of the created storage account."
+}
+
+# Output the names of the created containers
+output "container_names_created" {
+  value = [for s in azurerm_storage_container.containers : s.name]
+  description = "A list of names of the created storage containers."
 }

@@ -9,6 +9,8 @@ ARG DELTA_VERSION=3.2.1
 ARG HIVE_VERSION=3.1.3
 ARG MYSQL_CONNECTOR_VERSION=8.4.0
 ARG HADOOP_VERSION=3.3.4
+ARG AZURE_HADOOP_CONNECTOR_VERSION=3.3.4
+ARG AZURE_STORAGE_SDK_VERSION=12.25.1
 
 ENV SPARK_HOME="/opt/spark"
 ENV HIVE_HOME="/opt/hive"
@@ -48,7 +50,14 @@ RUN mkdir -p $SPARK_HOME/jars $HIVE_HOME/lib && \
     wget -P $SPARK_HOME/jars/ https://repo1.maven.org/maven2/io/delta/delta-spark_2.12/${DELTA_VERSION}/delta-spark_2.12-${DELTA_VERSION}.jar && \
     wget -P $HIVE_HOME/lib/ https://repo1.maven.org/maven2/com/mysql/mysql-connector-j/${MYSQL_CONNECTOR_VERSION}/mysql-connector-j-${MYSQL_CONNECTOR_VERSION}.jar
 
-# Configure Hive (copy only once, then cp internally)
+
+# Download Azure storage dependencies Jars
+RUN wget -P $SPARK_HOME/jars/ https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-azure/${AZURE_HADOOP_CONNECTOR_VERSION}/hadoop-azure-${AZURE_HADOOP_CONNECTOR_VERSION}.jar && \
+    wget -P $SPARK_HOME/jars/ https://repo1.maven.org/maven2/com/azure/azure-storage-blob/${AZURE_STORAGE_SDK_VERSION}/azure-storage-blob-${AZURE_STORAGE_SDK_VERSION}.jar
+
+
+# Copy hive-site.xml
+RUN mkdir -p ${SPARK_HOME}/conf
 COPY docker/hive-conf/hive-site.xml ${HIVE_HOME}/conf/hive-site.xml
 COPY docker/hive-conf/hive-site.xml ${SPARK_HOME}/conf/hive-site.xml
 

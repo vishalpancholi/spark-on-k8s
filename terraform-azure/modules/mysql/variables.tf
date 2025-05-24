@@ -20,6 +20,11 @@ variable "mysql_admin_username" {
   type        = string
 }
 
+variable "zone" {
+  description = "mysql server zone"
+  type = number
+}
+
 variable "mysql_admin_password" {
   description = "Administrator password for the MySQL server."
   type        = string
