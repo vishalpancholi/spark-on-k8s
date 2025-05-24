@@ -26,6 +26,9 @@ output "storage_account_name" {
   value       = module.storage.storage_account_name
 }
 
+output "storage_container_names_created" {
+  value = module.storage.container_names_created
+}
 
 output "mysql_server_fqdn" {
   description = "The fully qualified domain name of the MySQL server."

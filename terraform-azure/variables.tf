@@ -34,16 +34,56 @@ variable "aks_node_vm_size" {
   default     = "standard_b2pls_v2" // cheapest across regions (central india)
 }
 
+variable "aks_default_nodepool_enable_auto_scaling" {
+  description = "Enable autoscaling for the default node pool."
+  type        = bool
+  default     = true
+}
+
+variable "aks_default_nodepool_min_count" {
+  description = "Minimum number of nodes for the default node pool when autoscaling is enabled."
+  type        = number
+  default     = 1
+}
+
+variable "aks_default_nodepool_max_count" {
+  description = "Maximum number of nodes for the default node pool when autoscaling is enabled."
+  type        = number
+  default     = 10
+}
+
 variable "storage_account_name" {
   description = "Name of the Azure Storage Account."
   type        = string
   default     = "granicasa"
 }
 
-variable "storage_container_name" {
-  description = "Name of the blob container to create within the Storage Account."
-  type        = string
-  default     = "mycontainer"
+variable "container_definitions" {
+  description = "A map of objects defining the storage containers to create within the storage account."
+  type = map(object({
+    name                  = string
+    container_access_type = optional(string, "private")
+  }))
+  default = {
+    # Using specific keys like "main_container", "raw_data", etc.
+    # for internal Terraform referencing. The 'name' attribute is the actual Azure container name.
+    main_container = {
+      name                  = "mycontainer"
+      container_access_type = "private"
+    },
+    raw_data = {
+      name                  = "row"
+      container_access_type = "private"
+    },
+    transformed_data = {
+      name                  = "transformed"
+      container_access_type = "private"
+    },
+    application_data = {
+      name                  = "application"
+      container_access_type = "private"
+    }
+  }
 }
 
 // MySQL variables
@@ -81,4 +121,10 @@ variable "mysql_storage_gb" {
   description = "Storage size in GB for the MySQL server."
   type        = number
   default     = 20 // 20GB minimum for Flexible Server
+}
+
+variable "zone" {
+  description = "mysql server zone"
+  type = number
+  default = 2
 }

@@ -28,3 +28,18 @@ variable "aks_subnet_id" {
   description = "The ID of the subnet where AKS nodes will be deployed."
   type        = string
 }
+
+variable "aks_default_nodepool_enable_auto_scaling" {
+  description = "Enable autoscaling for the default node pool."
+  type        = bool
+}
+
+variable "aks_default_nodepool_min_count" {
+  description = "Minimum number of nodes for the default node pool when autoscaling is enabled."
+  type        = number
+}
+
+variable "aks_default_nodepool_max_count" {
+  description = "Maximum number of nodes for the default node pool when autoscaling is enabled."
+  type        = number
+}

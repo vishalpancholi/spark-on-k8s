@@ -12,10 +12,10 @@ resource "azurerm_storage_account" "main" {
   }
 }
 
-// Create a Blob Container within the Storage Account
-resource "azurerm_storage_container" "main" {
-  name                  = var.storage_container_name
+// Create multiple storage containers using for_each
+resource "azurerm_storage_container" "containers" {
+  for_each = var.container_definitions
+  name                  = each.value.name
   storage_account_name  = azurerm_storage_account.main.name
-  container_access_type = "private" // Private access by default
+  container_access_type = each.value.container_access_type
 }
-
