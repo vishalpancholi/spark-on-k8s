@@ -1,1 +1,1 @@
-# spark-on-eks
+# spark-on-K8s
