@@ -11,7 +11,7 @@ terraform-azure/
 ├── outputs.tf           # Output values
 ├── provider.tf          # Azure provider configuration
 ├── versions.tf          # Terraform and provider version constraints
-├── terraform.tfvars     # Variable values (e.g., subscription ID, MySQL password)
+├── terraform.tfvars     # Variable values (azure_subscription_id, mysql_admin_password)
 ├── modules/
 │   ├── aks/             # AKS cluster module
 │   │   ├── main.tf
@@ -80,4 +80,4 @@ To deploy the infrastructure:
 
 ## Configuration
 
-All configurations are managed through variables defined in `variables.tf` and set in `terraform.tfvars`. Modify these files to adjust the infrastructure to your needs.
+All configurations are managed through variables defined in `variables.tf` and subscription_id and mysql password in `terraform.tfvars`. Modify these files to adjust the infrastructure to your needs.
