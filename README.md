@@ -1,4 +1,4 @@
-# Website Log Analytics Pipeline on Azure
+# Spark on Kubernetes: Website Log Processing
 
 This repository outlines a scalable data pipeline for processing website log data, generating analytical insights, and storing results using Apache Spark and Delta Lake on Azure.
 
