@@ -60,6 +60,25 @@ module "aks" {
   aks_default_nodepool_max_count = var.aks_default_nodepool_max_count
 }
 
+
+resource "azurerm_kubernetes_cluster_node_pool" "extra_pool" {
+  name                  = "spark"
+  kubernetes_cluster_id = module.aks.aks_cluster_id
+  vm_size               = var.aks_spark_nodepool_sku
+  node_count            = var.aks_node_count
+  vnet_subnet_id        = azurerm_subnet.aks_subnet.id
+  enable_auto_scaling   = var.aks_spark_nodepool_enable_auto_scaling
+  min_count             = var.aks_spark_nodepool_min_count
+  max_count             = var.aks_spark_nodepool_max_count
+  mode                  = var.aks_spark_nodepool_mode
+  os_type               = var.aks_spark_nodepool_os
+
+  tags = {
+    environment = "dev"
+    project     = "granica-demo"
+  }
+}
+
 // Call the MySQL module
 module "mysql" {
   source               = "./modules/mysql" // Path to the MySQL module
