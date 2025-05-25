@@ -34,9 +34,7 @@ data:
     # Reduce partitions for better string processing performance
     spark.sql.shuffle.partitions=20  
     
-    # ===========================================
     # CACHING (For repeated analytics)
-    # ===========================================
     # Enable off-heap storage for caching parsed log data
     spark.executor.memoryOffHeap.enabled=true
     #  spark.executor.memoryOffHeap.size=512m
