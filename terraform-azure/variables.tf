@@ -52,6 +52,42 @@ variable "aks_default_nodepool_max_count" {
   default     = 10
 }
 
+variable "aks_spark_nodepool_enable_auto_scaling" {
+  description = "Enable autoscaling for the default node pool."
+  type        = bool
+  default     = true
+}
+
+variable "aks_spark_nodepool_min_count" {
+  description = "Minimum number of nodes for the default node pool when autoscaling is enabled."
+  type        = number
+  default     = 1
+}
+
+variable "aks_spark_nodepool_max_count" {
+  description = "Maximum number of nodes for the default node pool when autoscaling is enabled."
+  type        = number
+  default     = 10
+}
+
+variable "aks_spark_nodepool_mode" {
+  description = "mode of node pool."
+  type        = string
+  default     = "User"
+}
+
+variable "aks_spark_nodepool_os" {
+  description = "os of node pool."
+  type        = string
+  default     = "Linux"
+}
+
+variable "aks_spark_nodepool_sku" {
+  description = "sku of node pool"
+  type        = string
+  default     = "standard_b2pls_v2"
+}
+
 variable "storage_account_name" {
   description = "Name of the Azure Storage Account."
   type        = string
