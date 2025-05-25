@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: spark-config
+  namespace: spark
+data:
+  spark-defaults.conf: |
+    # DELTA LAKE
+    spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension
+    spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog
+    # Helps optimize write performance by coalescing small files
+    spark.databricks.delta.properties.defaults.autoOptimize.optimizeWrite=true
+    # Helps with automatic compaction of small files after write
+    spark.databricks.delta.properties.defaults.autoOptimize.autoCompact=true
+    # For efficient partition overwrites
+    spark.sql.sources.partitionOverwriteMode=dynamic
+    
+    # KUBERNETES (Required for AKS)
+    spark.kubernetes.authenticate.driver.serviceAccountName=spark-driver
+    spark.kubernetes.namespace=spark
+    spark.kubernetes.executor.deleteOnTermination=true
+    spark.kubernetes.container.image=vishalpancholi/spark-delta:v1
+    
+    # RESOURCE ALLOCATION (Standard_B2pls_v2: 2 vCPU, 4GB RAM)
+    spark.driver.memory=2.5g
+    spark.driver.cores=1
+    spark.executor.memory=2.5g
+    spark.executor.cores=1
+    
+    # TEXT PROCESSING OPTIMIZATION (For log parsing)
+    # Optimize for string operations and regex parsing
+    spark.sql.adaptive.enabled=true
+    spark.sql.adaptive.coalescePartitions.enabled=true
+    # Reduce partitions for better string processing performance
+    spark.sql.shuffle.partitions=20  
+    
+    # ===========================================
+    # CACHING (For repeated analytics)
+    # ===========================================
+    # Enable off-heap storage for caching parsed log data
+    spark.executor.memoryOffHeap.enabled=true
+    #  spark.executor.memoryOffHeap.size=512m
+    # Increase storage fraction for caching intermediate results
+    spark.storage.memoryFraction=0.6
+    
+  
+    # AZURE STORAGE (Managed Identity)
+    spark.hadoop.fs.azure.account.auth.type=ManagedIdentity
+    spark.hadoop.fs.azure.account.oauth.provider.type=org.apache.hadoop.fs.azurebfs.oauth2.MsiTokenProvider
