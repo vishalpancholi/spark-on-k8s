@@ -108,7 +108,7 @@ variable "container_definitions" {
       container_access_type = "private"
     },
     raw_data = {
-      name                  = "row"
+      name                  = "raw"
       container_access_type = "private"
     },
     transformed_data = {

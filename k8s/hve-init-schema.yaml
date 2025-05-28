@@ -9,7 +9,7 @@ spec:
       restartPolicy: Never
       containers:
         - name: hive-schema-init
-          image: vishalpancholi/spark-delta:v1
+          image: vishalpancholi/spark-delta:v3
           command: ["/bin/bash", "-c"]
           args:
             - |

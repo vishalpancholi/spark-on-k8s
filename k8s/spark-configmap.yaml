@@ -8,43 +8,42 @@ data:
     # DELTA LAKE
     spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension
     spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog
-    spark.sql.sources.partitionOverwriteMode=dynamic
 
     # KUBERNETES
     spark.kubernetes.authenticate.driver.serviceAccountName=spark-driver
     spark.kubernetes.namespace=spark
     spark.kubernetes.executor.deleteOnTermination=true
-    spark.kubernetes.container.image=vishalpancholi/spark-delta:v1
-
-    # RESOURCE ALLOCATION (Standard_B2pls_v2: 2 vCPU, 4GB RAM)
+    spark.kubernetes.driver.deleteOnTermination=true
+    spark.kubernetes.container.image=vishalpancholi/spark-delta:v14
+    
+    # DYNAMIC PARTITIONING
+    spark.sql.sources.partitionOverwriteMode=dynamic
+    spark.sql.catalogImplementation=hive    
+    
+    # RESOURCE ALLOCATION
     spark.executor.instances=3
-    spark.driver.memory=2.5g
+    spark.driver.memory=1500m
     spark.driver.cores=1
-    spark.executor.memory=2.5g
+    spark.executor.memory=1500m
     spark.executor.cores=1
 
+    # spark AQE optimization
     spark.sql.adaptive.enabled=true
     spark.sql.adaptive.coalescePartitions.enabled=true
+    spark.sql.adaptive.skewJoin.enabled=true
     spark.sql.shuffle.partitions=10
+    
+    # AZURE STORAGE (Access key)
+    spark.hadoop.fs.azure.account.key.granicasa.dfs.core.windows.net=${STORAGE_ACCESS_KEY}
 
     # SPARK EVENT LOGS location
     spark.eventLog.enabled=true
-    spark.eventLog.dir=abfss://<container>@<storage_account>.dfs.core.windows.net/spark-events
+    spark.eventLog.dir=abfss://mycontainer@granicasa.dfs.core.windows.net/spark-events
 
-    # AZURE STORAGE (Managed Identity)
-    spark.hadoop.fs.azure.account.auth.type=ManagedIdentity
-    spark.hadoop.fs.azure.account.oauth.provider.type=org.apache.hadoop.fs.azurebfs.oauth2.MsiTokenProvider
-
-    # (Optional) Set default master to Kubernetes for spark-submit from within pod
+    # KUBERNETES MASTER
     spark.master=k8s://https://kubernetes.default.svc
-
-    # (Optional) Application name default
-    spark.app.name=default-spark-job
-
-# METRICS CONFIGURATION (For Prometheus/JMX Scrapping)
-#  spark.metrics.enabled=true
-#  spark.metrics.conf.master.sink.jmx.class=org.apache.spark.metrics.sink.JmxSink
-#  spark.metrics.conf.applications.sink.jmx.class=org.apache.spark.metrics.sink.JmxSink
-#  spark.metrics.conf.driver.sink.jmx.class=org.apache.spark.metrics.sink.JmxSink
-#  spark.metrics.conf.executor.sink.jmx.class=org.apache.spark.metrics.sink.JmxSink
-#  spark.metrics.conf.source.jvm.class=org.apache.spark.metrics.source.JvmSource
+    
+    spark.hadoop.javax.jdo.option.ConnectionURL=jdbc:mysql://spark-hms-mysql-server.mysql.database.azure.com:3306/hive_metastore
+    spark.hadoop.javax.jdo.option.ConnectionDriverName=com.mysql.cj.jdbc.Driver
+    spark.hadoop.javax.jdo.option.ConnectionUserName=mysqladmin
+    spark.hadoop.javax.jdo.option.ConnectionPassword=${HIVE_METASTORE_PASSWORD}
