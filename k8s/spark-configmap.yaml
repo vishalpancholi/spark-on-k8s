@@ -14,7 +14,7 @@ data:
     spark.kubernetes.namespace=spark
     spark.kubernetes.executor.deleteOnTermination=true
     spark.kubernetes.driver.deleteOnTermination=true
-    spark.kubernetes.container.image=vishalpancholi/spark-delta:v14
+    spark.kubernetes.container.image=vishalpancholi/spark-delta:v15
     
     # DYNAMIC PARTITIONING
     spark.sql.sources.partitionOverwriteMode=dynamic
@@ -47,3 +47,22 @@ data:
     spark.hadoop.javax.jdo.option.ConnectionDriverName=com.mysql.cj.jdbc.Driver
     spark.hadoop.javax.jdo.option.ConnectionUserName=mysqladmin
     spark.hadoop.javax.jdo.option.ConnectionPassword=${HIVE_METASTORE_PASSWORD}
+    
+    # PROMETHEUS METRICS CONFIGURATION
+    spark.ui.prometheus.enabled=true
+    spark.metrics.namespace=spark
+    spark.metrics.conf.driver.sink.prometheusServlet.class=org.apache.spark.metrics.sink.PrometheusServlet
+    spark.metrics.conf.driver.sink.prometheusServlet.path=/metrics/driver
+    spark.metrics.conf.executor.sink.prometheusServlet.class=org.apache.spark.metrics.sink.PrometheusServlet
+    spark.metrics.conf.executor.sink.prometheusServlet.path=/metrics/executors
+    
+    # Enable JMX metrics (optional but useful)
+    spark.metrics.conf.*.sink.jmx.class=org.apache.spark.metrics.sink.JmxSink
+    
+    # PROMETHEUS ANNOTATIONS (for PodMonitor autodiscovery)
+    spark.kubernetes.driver.annotation.prometheus.io/scrape=true
+    spark.kubernetes.driver.annotation.prometheus.io/port=4040
+    spark.kubernetes.driver.annotation.prometheus.io/path=/metrics/driver
+    spark.kubernetes.executor.annotation.prometheus.io/scrape=true
+    spark.kubernetes.executor.annotation.prometheus.io/port=4041
+    spark.kubernetes.executor.annotation.prometheus.io/path=/metrics/executors

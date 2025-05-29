@@ -1,0 +1,39 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: spark-driver-pods
+  namespace: monitoring
+  labels:
+    release: kube-prometheus-stack
+spec:
+  namespaceSelector:
+    matchNames:
+      - spark
+  selector:
+    matchLabels:
+      spark-role: driver
+  podMetricsEndpoints:
+    - port: ui
+      path: /metrics/driver
+      interval: 15s
+
+---
+
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: spark-executor-pods
+  namespace: monitoring
+  labels:
+    release: kube-prometheus-stack
+spec:
+  namespaceSelector:
+    matchNames:
+      - spark
+  selector:
+    matchLabels:
+      spark-role: executor
+  podMetricsEndpoints:
+    - port: driver-metrics-port
+      path: /metrics/executors
+      interval: 15s

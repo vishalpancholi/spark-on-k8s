@@ -1,0 +1,75 @@
+prometheus:
+  prometheusSpec:
+    maximumStartupDurationSeconds: 300
+    # Storage - 5GB is sufficient for our use case
+    retention: 10d
+    resources:
+      requests:
+        memory: "1Gi"
+        cpu: "500m"
+      limits:
+        memory: "2Gi"
+        cpu: "1000m"
+    # Storage configuration
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: managed-csi
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 5Gi
+    additionalScrapeConfigs:
+      - job_name: 'spark-custom-metrics-pushgateway'
+        static_configs:
+        - targets: [ 'prometheus-pushgateway.monitoring.svc.cluster.local:9091' ]
+
+grafana:
+  # Minimal persistence
+  persistence:
+    enabled: true
+    size: 2Gi
+    storageClassName: managed-csi
+  
+  adminPassword: "admin123"
+  
+  resources:
+    requests:
+      memory: "128Mi"
+      cpu: "50m"
+    limits:
+      memory: "256Mi"
+      cpu: "200m"
+  
+  # ClusterIP for port-forward access
+  service:
+    type: ClusterIP
+
+# Disable AlertManager
+alertmanager:
+  enabled: false
+
+# Essential monitoring components for Kubernetes + Spark
+kubeApiServer:
+  enabled: true
+kubelet:
+  enabled: true
+kubeControllerManager:
+  enabled: true
+coreDns:
+  enabled: true
+kubeEtcd:
+  enabled: false
+kubeScheduler:
+  enabled: true
+kubeProxy:
+  enabled: true
+kubeStateMetrics:
+  enabled: true
+nodeExporter:
+  enabled: true
+
+
+prometheus-node-exporter:
+  hostRootFsMount:
+    enabled: false
