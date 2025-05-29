@@ -9,7 +9,7 @@ spec:
   serviceAccountName: spark-driver
   containers:
     - name: jupyter-spark
-      image: vishalpancholi/spark-delta:v1
+      image: vishalpancholi/spark-delta:v15
       command: ["/bin/bash"]
       args:
         - "-c"
@@ -39,24 +39,29 @@ spec:
         - name: SPARK_MASTER_URL
           value: "k8s://https://kubernetes.default.svc.cluster.local:443"
         - name: SPARK_KUBERNETES_CONTAINER_IMAGE
-          value: "vishalpancholi/spark-delta:v1"
+          value: "vishalpancholi/spark-delta:v15"
 
         # Hive Metastore configuration
         - name: HIVE_METASTORE_JDBC_URL
           valueFrom:
             secretKeyRef:
-              name: mysql-credentials
+              name: credentials
               key: jdbc-url
         - name: HIVE_METASTORE_USER
           valueFrom:
             secretKeyRef:
-              name: mysql-credentials
+              name: credentials
               key: username
         - name: HIVE_METASTORE_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: mysql-credentials
+              name: credentials
               key: password
+        - name: STORAGE_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: credentials
+              key: accesskey
 
         # Azure Storage Account
         - name: AZURE_STORAGE_ACCOUNT
@@ -78,7 +83,7 @@ spec:
           memory: "2Gi"
           cpu: "500m"
         limits:
-          memory: "3Gi"
+          memory: "2Gi"
           cpu: "1"
 
   volumes:
